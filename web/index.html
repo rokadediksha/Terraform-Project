@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Patient Appointment System</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+      padding: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(72,187,120,0.35);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.6em;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #718096;
+      font-size: 1.1em;
+      margin-bottom: 40px;
+    }
+
+    .form-section {
+      background: #f7fafc;
+      padding: 36px;
+      border-radius: 18px;
+      border-left: 5px solid #667eea;
+      margin-bottom: 30px;
+    }
+
+    .form-section h3 {
+      text-align: center;
+      color: #2d3748;
+      margin-bottom: 28px;
+      font-size: 1.2em;
+    }
+
+    .form-group { margin-bottom: 22px; }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #2d3748;
+      font-weight: 600;
+      font-size: 1em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 16px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102,126,234,0.12);
+      transform: translateY(-1px);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(102,126,234,0.4);
+    }
+
+    .alert {
+      display: none;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.1em;
+      margin-top: 22px;
+      animation: slideIn 0.4s ease;
+    }
+
+    .alert-success {
+      background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+      color: #22543d;
+      border: 2px solid #38a169;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .status-card {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 24px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .status-icon { font-size: 2em; margin-bottom: 8px; }
+
+    @media (max-width: 640px) {
+      .container { padding: 28px 18px; }
+      h1 { font-size: 2em; }
+      .input-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">&#10003; Terraform + Apache</div>
+
+    <h1>&#127973; Patient Appointment System</h1>
+    <p class="subtitle">Book your appointment online in just a few minutes</p>
+
+    <div class="form-section">
+      <h3>&#128203; Book an Appointment</h3>
+
+      <form id="appointmentForm" method="POST" action="submit.php">
+        <div class="input-row">
+          <div class="form-group">
+            <label for="name">&#128100; Full Name</label>
+            <!-- name attribute is required for POST data to be sent -->
+            <input type="text" id="name" name="name" required placeholder="Your full name" />
+          </div>
+          <div class="form-group">
+            <label for="phone">&#128222; Phone Number</label>
+            <input type="tel" id="phone" name="phone" required placeholder="10-digit number"
+                   pattern="[0-9]{10}" title="Enter a 10-digit phone number" />
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="form-group">
+            <label for="date">&#128197; Appointment Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+          <div class="form-group">
+            <label for="time">&#128336; Preferred Time</label>
+            <select id="time" name="time" required>
+              <option value="">Select time slot</option>
+              <option value="09:00-10:00">09:00 AM – 10:00 AM</option>
+              <option value="10:00-11:00">10:00 AM – 11:00 AM</option>
+              <option value="11:00-12:00">11:00 AM – 12:00 PM</option>
+              <option value="14:00-15:00">02:00 PM – 03:00 PM</option>
+              <option value="15:00-16:00">03:00 PM – 04:00 PM</option>
+              <option value="16:00-17:00">04:00 PM – 05:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="department">&#127973; Department</label>
+          <select id="department" name="department" required>
+            <option value="">Choose department</option>
+            <option value="Cardiology">Cardiology (Heart)</option>
+            <option value="Neurology">Neurology (Brain)</option>
+            <option value="Orthopedics">Orthopedics (Bones)</option>
+            <option value="Dentistry">Dentistry</option>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Pediatrics">Pediatrics (Children)</option>
+            <option value="Gynecology">Gynecology</option>
+          </select>
+        </div>
+
+        <button type="submit">&#10003; Book Appointment</button>
+      </form>
+
+      <div id="alert" class="alert alert-success">
+        &#10003; <strong>Appointment booked successfully!</strong><br /><br />
+        We will call you to confirm within 24 hours.
+      </div>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="status-icon">&#128994;</div>
+        <strong>EC2 Web Server</strong><br />Public Subnet
+      </div>
+      <div class="status-card">
+        <div class="status-icon">&#128274;</div>
+        <strong>RDS MySQL</strong><br />Private Subnets
+      </div>
+      <div class="status-card">
+        <div class="status-icon">&#127760;</div>
+        <strong>VPC Network</strong><br />t3.micro · Free Tier
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set minimum date to today
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+    // Show success banner after form submission (page reload from PHP redirect)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('status') === 'success') {
+      const alert = document.getElementById('alert');
+      alert.style.display = 'block';
+      alert.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => { alert.style.display = 'none'; }, 8000);
+      history.replaceState(null, '', window.location.pathname);
+    }
+  </script>
+</body>
+</html>
